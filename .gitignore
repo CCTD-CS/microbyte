@@ -105,6 +105,3 @@ dist
 
 # Documentation
 docs/
-
-# Types
-build/
