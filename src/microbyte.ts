@@ -1,3 +1,5 @@
-export const sayHi = () => {
-	console.log("Hi");
-};
+import { BaseMicrobyte } from "./interface";
+export class Microbyte implements BaseMicrobyte {
+	public constructor() {
+	}
+}
