@@ -1,5 +1,4 @@
-import { BaseMicrobyte } from "./interface";
-export class Microbyte implements BaseMicrobyte {
-	public constructor() {
-	}
-}
+import { Microbit } from "./implementations/Microbit";
+
+// Export Microbit base
+export { Microbit };

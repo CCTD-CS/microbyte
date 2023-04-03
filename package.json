@@ -1,6 +1,6 @@
 {
 	"name": "microbyte",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "A wrapper for bluetooth and USB interactivity between browsers and micro:bits",
 	"main": "dist/microbyte.cjs.js",
 	"module": "dist/microbyte.esm.js",
@@ -12,6 +12,7 @@
 	"scripts": {
 		"dev": "rollup -c -w --bundleConfigAsCjs",
 		"build": "rollup -c --bundleConfigAsCjs",
+		"lint": "npm run lint:eslint && npm run lint:prettier",
 		"docs": "typedoc src/microbyte.ts --out docs",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
@@ -40,17 +41,18 @@
 	"homepage": "https://github.com/r59q/microbyte#readme",
 	"dependencies": {
 		"@types/w3c-web-usb": "^1.0.6",
-		"@types/web-bluetooth": "^0.0.16",
-		"typedoc": "^0.23.28"
+		"@types/web-bluetooth": "^0.0.16"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^24.0.1",
 		"@rollup/plugin-node-resolve": "^15.0.1",
 		"@rollup/plugin-typescript": "^11.0.0",
-		"eslint": "^8.36.0",
+		"prettier": "^2.8.7",
+		"eslint": "^8.37.0",
 		"rollup": "^3.20.2",
+		"typedoc": "^0.23.28",
 		"ts-node": "^10.9.1",
 		"tslib": "^2.5.0",
-		"typescript": "^5.0.2"
+		"typescript": "^5.0.3"
 	}
 }
