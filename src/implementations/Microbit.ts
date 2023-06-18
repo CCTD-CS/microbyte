@@ -17,7 +17,7 @@ export class Microbit implements isMicrobit {
 		return this.bluetoothDevice;
 	}
 
-	public async request(
+	public async requestBluetooth(
 		name?: string | PairingPattern,
 		onSuccess?: () => void,
 		onFailure?: (reason?: any) => void
@@ -73,7 +73,7 @@ export class Microbit implements isMicrobit {
 	private warnIfMicrobitIsNotDefined() {
 		if (!this.hasMicrobitBeenRequested()) {
 			console.warn(
-				"Cannot get BluetoothDevice. It is undefined. Make sure to request it using microbit.request() function"
+				"Cannot get BluetoothDevice. It is undefined. Make sure to request it using microbit.requestBluetooth() function"
 			);
 		}
 	}
