@@ -5,11 +5,38 @@ import { throwErrorIfBluetoothNotSupported } from "../utils/PlatformSupport";
 
 export class Microbit implements isMicrobit {
 	private services: IsService[];
-
 	private bluetoothDevice: BluetoothDevice | undefined;
 
-	public constructor(services: Array<new () => IsService> = []) {
-		this.services = services.map((service) => new service());
+	public constructor(
+		services: Array<new (microbit: Microbit) => IsService> = []
+	) {
+		this.services = services.map((service) => new service(this));
+	}
+
+	public getService<T extends IsService>(
+		serviceType: new (microbit: Microbit) => T
+	): T {
+		this.services.forEach((service: IsService) => {
+			if (
+				service.getServiceUUID() ==
+				new serviceType(this).getServiceUUID()
+			) {
+				return service;
+			}
+		});
+		throw new Error(
+			"Service not found, make sure to specify it in constructor."
+		);
+	}
+
+	public isBluetoothConnected(): boolean {
+		if (!this.bluetoothDevice) {
+			return false;
+		}
+		if (!this.bluetoothDevice.gatt) {
+			return false;
+		}
+		return this.bluetoothDevice.gatt.connected;
 	}
 
 	public getBluetoothDevice(): BluetoothDevice | undefined {
@@ -33,10 +60,6 @@ export class Microbit implements isMicrobit {
 				this.handleDeviceRequestSuccess(device, onSuccess)
 			)
 			.catch(onFailure);
-	}
-
-	public getService<T extends IsService>(): T {
-		throw new Error("Method not implemented.");
 	}
 
 	private async requestDevice(
