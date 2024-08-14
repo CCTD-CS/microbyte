@@ -17,25 +17,45 @@ export class Microbit implements isMicrobit {
 		serviceType: new (microbit: Microbit) => T
 	): T {
 		this.services.forEach((service: IsService) => {
+			console.log(service.getServiceUUID())
+			console.log(new serviceType(this).getServiceUUID())
+			console.log(service.getServiceUUID() ===
+				new serviceType(this).getServiceUUID());
 			if (
-				service.getServiceUUID() ==
+				service.getServiceUUID() ===
 				new serviceType(this).getServiceUUID()
 			) {
+				console.log("Service found")
 				return service;
 			}
 		});
+		console.log("Service not found")
 		throw new Error(
 			"Service not found, make sure to specify it in constructor."
 		);
 	}
 
+	public async connect(): Promise<void> {
+		this.warnIfMicrobitIsNotDefined();
+		if (!this.bluetoothDevice) {
+			throw new Error("BluetoothDevice is not defined.");
+		}
+		if (!this.bluetoothDevice.gatt) {
+			throw new Error("BluetoothDevice.gatt is not defined.");
+		}
+		await this.bluetoothDevice.gatt.connect();
+	}
+
 	public isBluetoothConnected(): boolean {
 		if (!this.bluetoothDevice) {
+			console.log("no device");
 			return false;
 		}
 		if (!this.bluetoothDevice.gatt) {
+			console.log("no gatt");
 			return false;
 		}
+		console.log(this.bluetoothDevice.gatt.connected);
 		return this.bluetoothDevice.gatt.connected;
 	}
 
@@ -55,7 +75,7 @@ export class Microbit implements isMicrobit {
 
 		const namePrefix = name ? `BBC micro:bit [${name}]` : `BBC micro:bit`;
 
-		this.requestDevice(namePrefix, optionalServicesUuids)
+		await this.requestDevice(namePrefix, optionalServicesUuids)
 			.then((device) =>
 				this.handleDeviceRequestSuccess(device, onSuccess)
 			)

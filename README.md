@@ -18,3 +18,4 @@ Lints the project
 
 ## ```npm run docs```
 Produces documentation
+
