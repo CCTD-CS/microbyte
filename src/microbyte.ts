@@ -1,6 +1,7 @@
-import { Accelerometer } from "./implementations/Accelerometer";
 import { Microbit } from "./implementations/Microbit";
+import { MicrobitBluetoothDevice } from "./implementations/MicrobitBluetoothDevice";
+import { MicrobitDeviceState } from "./implementations/MicrobitDevice";
 import { PairingPattern } from "./utils/PairingPattern";
 
 // Export Microbit base
-export { Microbit, Accelerometer, PairingPattern };
+export { Microbit, PairingPattern, MicrobitBluetoothDevice, MicrobitDeviceState };
