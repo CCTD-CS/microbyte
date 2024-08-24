@@ -22,11 +22,13 @@ npm install microbyte
 
 | Service    | Support |
 | ---------- | ------- |
+| Connection        | ✅      |
+| Reconnection        | 🔨 Doesn't retry if failed      |
 | Accelerometer  | ✅      |
 | UART - Read      | ✅      |
-| UART - Write        | 🔨 Limited to 20 chars length      |
-| Buttons      | 🔨 A and B, but not both simultaniously      |
-| LEDs        | ❌      |
+| UART - Write        | ✅      |
+| Buttons      | 🔨 A and B, but not both simultanously      |
+| LEDs        | 🔨 On/Off. No variable strength      |
 | PIN IO        | ❌      |
 | Microphone*        | ❌      |
 

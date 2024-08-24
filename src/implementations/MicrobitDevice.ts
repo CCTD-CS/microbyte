@@ -1,3 +1,4 @@
+import { MicrobitHandler } from "../interfaces/MicrobitHandler";
 
 /**
  * The state of the Microbit device
@@ -55,4 +56,20 @@ export interface MicrobitDevice {
      * Get whether the device should reconnect automatically
      */
     isAutoReconnectEnabled(): boolean;
+
+    /**
+     * Set the handler for the device. Handler is the object that will receive the data from the device
+     * Also receives events such as connection and disconnection
+     */
+    setHandler(handler: MicrobitHandler): void;
+
+    /**
+     * Send a message to the device
+     */
+    sendMessage(message: string): void;
+
+    /**
+     * Set the LED matrix on the device. It is a 5x5 matrix of booleans
+     */
+    setLEDMatrix(matrix: boolean[][]): Promise<void>;
 }

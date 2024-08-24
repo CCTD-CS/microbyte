@@ -2,6 +2,7 @@
   import { Microbit } from "microbyte";
   import MicrobitUi from "./lib/MicrobitUI.svelte";
   import { writable } from "svelte/store";
+  import ManualBluetoothAssignment from "./lib/ManualBluetoothAssignment.svelte";
   const microbits = writable([new Microbit()]);
   const addMicrobit = () => {
     microbits.update((microbits) => [...microbits, new Microbit()]);
@@ -13,10 +14,14 @@
 </script>
 
 <main>
+  <div style="margin-bottom: 16px;">
+    <ManualBluetoothAssignment />
+  </div>
   <div style="margin-bottom: 8px;">
     <button on:click={addMicrobit}> Add Microbit </button>
     <button on:click={removeMicrobit}> Remove Microbit </button>
   </div>
+
   <div class="grid">
     {#each $microbits as microbit}
       <MicrobitUi {microbit} />

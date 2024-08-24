@@ -1,5 +1,5 @@
 export const debugLog = (...message: any) => {
-    const debugEnabled = false;
+    const debugEnabled = true; // Disabled for releases
 
     if (debugEnabled) {
         console.log(...message);

@@ -1,8 +1,10 @@
+import { MicrobitHandler } from "../interfaces/MicrobitHandler";
 import { MicrobitDevice, MicrobitDeviceState } from "./MicrobitDevice";
 
 export class Microbit {
 
 	private device: MicrobitDevice | undefined = undefined;
+	private handler: MicrobitHandler | undefined = undefined;
 
 	constructor() {
 	}
@@ -17,6 +19,19 @@ export class Microbit {
 		}
 		if ([MicrobitDeviceState.DISCONNECTED, MicrobitDeviceState.CLOSED].includes(this.device.getState())) {
 			this.device.connect();
+		}
+	}
+
+	public setHandler(handler: MicrobitHandler) {
+		this.handler = handler;
+		if (this.device) {
+			this.device.setHandler(this.handler);
+		}
+	}
+
+	public sendMessage(message: string) {
+		if (this.device) {
+			this.device.sendMessage(message);
 		}
 	}
 
@@ -42,5 +57,11 @@ export class Microbit {
 			return this.device.getState();
 		}
 		return MicrobitDeviceState.CLOSED;
+	}
+
+	public async setLEDMatrix(matrix: boolean[][]): Promise<void> {
+		if (this.device) {
+			await this.device.setLEDMatrix(matrix);
+		}
 	}
 }
