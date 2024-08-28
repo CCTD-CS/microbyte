@@ -72,4 +72,9 @@ export interface MicrobitDevice {
      * Set the LED matrix on the device. It is a 5x5 matrix of booleans
      */
     setLEDMatrix(matrix: boolean[][]): Promise<void>;
+
+    /**
+     * Set the IO pin on the device
+     */
+    setIOPin(pin: number, on: boolean): void;
 }

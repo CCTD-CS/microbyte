@@ -235,4 +235,12 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
 
         return device;
     }
+
+    setIOPin(pin: MBSpecs.UsableIOPin, on: boolean): void {
+        if (this.deviceServices) {
+            this.deviceServices.setIOPin(pin, on);
+        } else {
+            throw new Error("Device services not initialized");
+        }
+    }
 }

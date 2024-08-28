@@ -17,6 +17,7 @@ export class MicrobitBluetoothDeviceServices {
     private uartTxListener: ((event: Event) => void) | undefined = undefined;
     private uartRxCharacteristic: BluetoothRemoteGATTCharacteristic | undefined = undefined;
     private LEDMatrixCharacteristic: BluetoothRemoteGATTCharacteristic | undefined = undefined;
+    private IOPinCharacteristic: BluetoothRemoteGATTCharacteristic | undefined = undefined;
 
     private accelerometerHandler: ((x: number, y: number, z: number) => void) | undefined = undefined;
     private buttonAHandler: ((state: MBSpecs.ButtonState) => void) | undefined = undefined;
@@ -38,6 +39,7 @@ export class MicrobitBluetoothDeviceServices {
         await this.initButtons(this.bluetoothDevice.gatt);
         await this.initUart(this.bluetoothDevice.gatt);
         await this.initLED(this.bluetoothDevice.gatt);
+        await this.initIOService(this.bluetoothDevice.gatt);
         debugLog("Micro:bit services initialized");
     }
 
@@ -152,6 +154,13 @@ export class MicrobitBluetoothDeviceServices {
         this.LEDMatrixCharacteristic = ledCharacteristic;
     }
 
+    private async initIOService(gatt: BluetoothRemoteGATTServer) {
+        debugLog("Initializing IO service");
+        const ioService = await gatt.getPrimaryService(MBSpecs.Services.IO_SERVICE);
+        const ioCharacteristic = await ioService.getCharacteristic(MBSpecs.Characteristics.IO_DATA);
+        this.IOPinCharacteristic = ioCharacteristic;
+    }
+
     public async sendMessage(message: string) {
         debugLog(`Sending message: ${message}`);
         const dataView = MBSpecs.Utility.messageToDataview(message);
@@ -186,6 +195,18 @@ export class MicrobitBluetoothDeviceServices {
         const dataView = new DataView(data.buffer);
 
         await this.LEDMatrixCharacteristic.writeValue(dataView);
+    }
+
+    public async setIOPin(pin: MBSpecs.UsableIOPin, on: boolean) {
+        const dataView = new DataView(new ArrayBuffer(2));
+        dataView.setInt8(0, pin);
+        dataView.setInt8(1, on ? 1 : 0);
+        if (!this.IOPinCharacteristic) {
+            throw new Error(
+                'Cannot send to output pin, have not subscribed to the IO service yet!',
+            );
+        }
+        await this.IOPinCharacteristic.writeValue(dataView);
     }
 
 }

@@ -1,4 +1,5 @@
 import { MicrobitHandler } from "../interfaces/MicrobitHandler";
+import MBSpecs from "./MBSpecs";
 import { MicrobitDevice, MicrobitDeviceState } from "./MicrobitDevice";
 
 export class Microbit {
@@ -62,6 +63,12 @@ export class Microbit {
 	public async setLEDMatrix(matrix: boolean[][]): Promise<void> {
 		if (this.device) {
 			await this.device.setLEDMatrix(matrix);
+		}
+	}
+
+	public setIOPin(pin: MBSpecs.UsableIOPin, on: boolean) {
+		if (this.device) {
+			this.device.setIOPin(pin, on);
 		}
 	}
 }
