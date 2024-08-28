@@ -40,7 +40,8 @@
 	"homepage": "https://github.com/r59q/microbyte#readme",
 	"dependencies": {
 		"@types/w3c-web-usb": "^1.0.6",
-		"@types/web-bluetooth": "^0.0.16"
+		"@types/web-bluetooth": "^0.0.16",
+		"dapjs": "^2.3.0"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^24.0.1",

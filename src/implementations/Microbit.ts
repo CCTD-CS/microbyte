@@ -1,11 +1,13 @@
 import { MicrobitHandler } from "../interfaces/MicrobitHandler";
 import MBSpecs from "./MBSpecs";
 import { MicrobitDevice, MicrobitDeviceState } from "./MicrobitDevice";
+import USBController from "./USBController";
 
 export class Microbit {
 
 	private device: MicrobitDevice | undefined = undefined;
 	private handler: MicrobitHandler | undefined = undefined;
+	private usbController: USBController | undefined = undefined;
 
 	constructor() {
 	}
@@ -70,5 +72,12 @@ export class Microbit {
 		if (this.device) {
 			this.device.setIOPin(pin, on);
 		}
+	}
+
+	public getUsbController() {
+		if (!this.usbController) {
+			this.usbController = new USBController();
+		}
+		return this.usbController;
 	}
 }

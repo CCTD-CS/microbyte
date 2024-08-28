@@ -17,7 +17,7 @@ npm install microbyte
 | ---------- | ------- |
 | Bluetooth  | 🔨      |
 | Radio      | ❌      |
-| USB        | ❌      |
+| USB        | 🔨      |
 
 ### Bluetooth
 
@@ -31,7 +31,7 @@ npm install microbyte
 | Buttons       | 🔨 A and B, but not both simultanously    |
 | LEDs          | 🔨 On/Off. No variable strength           |
 | PIN IO        | 🔨 Pins 1,2,3 are addressable             |
-| Microphone*   | ❌                                        |
+| Speaker*      | ❌                                        |
 
 \*Not applicable to v1 micro:bits
 
@@ -39,7 +39,15 @@ npm install microbyte
 Not implemented yet
 
 ### USB
-Not implemented yet
+
+| Feature           | Support                                   |
+| ----------------- | ----------------------------------------- |
+| Connection        | ✅                                        |
+| Read Serial number| ✅                                        |
+| Read version      | ❌                                        |
+| Flash .hex file   | ❌                                        |
+| Friendly name     | ✅                                        |
+
 
 # Usage
 
