@@ -44,9 +44,10 @@ Not implemented yet
 | ----------------- | ----------------------------------------- |
 | Connection        | ✅                                        |
 | Read Serial number| ✅                                        |
-| Read version      | ❌                                        |
-| Flash .hex file   | ❌                                        |
+| Read version      | ✅                                        |
+| Flash .hex file   | ✅                                        |
 | Friendly name     | ✅                                        |
+| Serial data       | ❌                                        |
 
 
 # Usage

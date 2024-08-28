@@ -1,4 +1,4 @@
-import { CortexM, WebUSB } from "dapjs";
+import { CortexM, DAPLink, WebUSB } from "dapjs";
 import { debugLog } from "../utils/Logging";
 import MBSpecs from "./MBSpecs";
 
@@ -29,11 +29,18 @@ class USBController {
     }
 
     public getSerialNumber(): string | undefined {
-        if (this.device) {
-            return this.device.serialNumber;
-        }
-        return "";
+        return this.device?.serialNumber
     }
+
+    public getModelNumber(): MBSpecs.MBVersion {
+        const serialNumber = this.getSerialNumber();
+        if (!serialNumber) {
+            throw new Error("Cannot get model number. Cannot read serialnumber!");
+        }
+        const sernoPrefix: string = serialNumber.substring(0, 4);
+        if (parseInt(sernoPrefix) < 9903) return 1;
+        else return 2;
+      }
 
     public async getFriendlyName(): Promise<string> {
         let result = '';
@@ -59,6 +66,29 @@ class USBController {
         }
     }
 
+    public async flashHex(
+        hex: ArrayBuffer,
+        progressCallback: (progress: number) => void,
+      ): Promise<void> {    
+        if (!this.webUsb) {
+            throw new Error("Cannot flash hex, no device connected. Connect it first")
+        }
+        const target = new DAPLink(this.webUsb);
+    
+        target.on(DAPLink.EVENT_PROGRESS, (progress: number) => {
+          progressCallback(progress);
+        });
+    
+        try {
+          await target.connect();
+          await target.flash(hex);
+          await target.disconnect();
+        } catch (error) {
+          console.log(error);
+          return Promise.reject(error);
+        }
+        return Promise.resolve();
+      }
 }
 
 export default USBController;
