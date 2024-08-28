@@ -154,11 +154,11 @@ Examples can be found in `/examples/`
 
 # For devs
 
-## ```npm run dev```
+### ```npm run dev```
 Continously compile project during development
 
-## ```npm build```
+### ```npm build```
 Builds the project
 
-## ```npm run docs```
+### ```npm run docs```
 Produces documentation (Not used at the moment)
