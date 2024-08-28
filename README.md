@@ -1,4 +1,5 @@
-# microbyte
+![Logo](/assets/logo.png)
+
 Utility tool that aids in communication and connection of micro:bits. 
 
 ```bash
@@ -162,3 +163,8 @@ Builds the project
 
 ### ```npm run docs```
 Produces documentation (Not used at the moment)
+
+# Notice
+This project is developed in collaboration with Aarhus University in Denmark for the ML-Machine project.
+
+License: MIT
