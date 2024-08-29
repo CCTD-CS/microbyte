@@ -35,7 +35,7 @@ class USBController {
     public getModelNumber(): MBSpecs.MBVersion {
         const serialNumber = this.getSerialNumber();
         if (!serialNumber) {
-            throw new Error("Cannot get model number. Cannot read serialnumber!");
+            throw new Error("Cannot get model number. Cannot read serialnumber. Is it connected?");
         }
         const sernoPrefix: string = serialNumber.substring(0, 4);
         if (parseInt(sernoPrefix) < 9903) return 1;
@@ -69,7 +69,7 @@ class USBController {
     public async flashHex(
         hex: ArrayBuffer,
         progressCallback: (progress: number) => void,
-      ): Promise<void> {    
+      ): Promise<void> {
         if (!this.webUsb) {
             throw new Error("Cannot flash hex, no device connected. Connect it first")
         }
