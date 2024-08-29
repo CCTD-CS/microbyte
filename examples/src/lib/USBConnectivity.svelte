@@ -31,9 +31,7 @@
 
 <div>
     <button on:click={connectToMicrobitUsb}>Connect USB</button>
-    {#if name !== ""}
-        <p>Connected to {name}</p>
-        <button on:click={flashHex}>Flash hex file</button>
-        <p>Flashing progress: {progress}</p>
-    {/if}
+    <p>Connected to {name}</p>
+    <button on:click={flashHex}>Flash hex file</button>
+    <p>Flashing progress: {progress}</p>
 </div>
