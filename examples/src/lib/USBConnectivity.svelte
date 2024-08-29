@@ -1,18 +1,18 @@
 <script lang="ts">
-    import type { Microbit } from "microbyte";
+    import type { Microbit, USBController } from "microbyte";
 
     export let microbit: Microbit;
 
-    const usbController = microbit.getUsbController();
+    const usbController: USBController = microbit.getUsbController();
     $: name = "";
 
     const connectToMicrobitUsb = async () => {
         await usbController.connect();
         name = await usbController.getFriendlyName();
-    }
+    };
 
-    $: progress = 0
-    const flashHex =async () => {
+    $: progress = 0;
+    const flashHex = async () => {
         let hex = "";
         // We use different hex files depending on the micro:bit model
         if (usbController.getModelNumber() === 2) {
@@ -23,10 +23,10 @@
 
         const hexFile: Response = await fetch(hex);
         const buffer: ArrayBuffer = await hexFile.arrayBuffer();
-        usbController.flashHex(buffer, prog => {
+        usbController.flashHex(buffer, (prog) => {
             progress = prog;
-        })
-    }
+        });
+    };
 </script>
 
 <div>

@@ -158,6 +158,60 @@ microbit.setHandler(handler)
 ```
 
 
+### USB
+
+Using the USB features is done via the USB controller.
+
+```ts
+import { MicrobitBluetoothDevice, Microbit } from "microbyte";
+
+const microbit = new Microbit();
+const usbController: USBController = microbit.getUsbController();
+
+const connectToMicrobitUsb = async () => {
+    await usbController.connect();
+    const mbName = await usbController.getFriendlyName();
+    console.log(`micro:bit name is: ${name}`);
+};
+```
+
+Connections must be done as a result of user interaction, just like the bluetooth device.
+
+```html
+<button on:click={connectToMicrobitUsb}>Connect USB</button>
+```
+
+Using the micro:bit USBController, you can read the model number and flash .hex files.
+
+```ts
+import { MicrobitBluetoothDevice, Microbit } from "microbyte";
+
+const microbit = new Microbit();
+const usbController: USBController = microbit.getUsbController();
+
+const flashHex = async () => {
+    let hex = "v1.hex";
+    // We use different hex files depending on the micro:bit model
+    if (usbController.getModelNumber() === 2) {
+        hex = "v2.hex"; // Can be any URL. These files are located on /v2.hex
+    }
+
+    // Use fetch to retrieve the data from a URL and convert it to an ArrayBuffer
+    const hexFile: Response = await fetch(hex);
+    const buffer: ArrayBuffer = await hexFile.arrayBuffer();
+    usbController.flashHex(buffer, (prog) => {
+        console.log(`Flashing progress: ${prog * 100}%`)
+    });
+};
+```
+
+Then we can flash hex files by clicking a single button.
+
+```html
+<button on:click={flashHex}>Flash hex file</button>
+```
+
+
 # Examples
 Examples can be found in `/examples/`
 
