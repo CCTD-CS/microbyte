@@ -7,6 +7,8 @@ export const getMicrobitStatus = (microbit: Microbit) => {
     return {
         statusConnected: microbit.getDeviceState(),
         reconnects: microbit.isAutoReconnectEnabled(),
+        version: microbit.getLastVersion() ?? "Unknown",
+        lastName: microbit.getLastName() ?? "Unknown"
     };
 };
 

@@ -80,4 +80,18 @@ export class Microbit {
 		}
 		return this.usbController;
 	}
+
+	public getLastVersion() {
+		if (this.device) {
+			return this.device.getLastVersion();
+		}
+		return undefined;
+	}
+
+	public getLastName() {
+		if (this.device) {
+			return this.device.getLastName();
+		}
+		return undefined;
+	}
 }

@@ -8,10 +8,14 @@
     export let microbit: Microbit;
     const microbitBluetooth = new MicrobitBluetoothDevice();
     microbit.setDevice(microbitBluetooth);
+    let inputName: string = "";
 
     const microbitStatus = writable(getMicrobitStatus(microbit));
 
     const connectToMicrobitBluetooth = async () => {
+        if (inputName.length > 0) {
+            microbitBluetooth.connect(inputName);
+        }
         microbit.connect();
     };
 
@@ -47,6 +51,7 @@
         <pre>{JSON.stringify($microbitStatus, null, 2)}</pre>
     </div>
     <div class="microbitContainerButtons">
+        <input bind:value={inputName} style="width:100px" />
         <button on:click={connectToMicrobitBluetooth} style="margin-bottom: 8px;"> Connect Bluetooth </button>
         <button
             on:click={disconnectMicrobitBluetooth}

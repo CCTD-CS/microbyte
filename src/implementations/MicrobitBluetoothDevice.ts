@@ -13,6 +13,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
     private deviceServices: MicrobitBluetoothDeviceServices | undefined = undefined;
     private microbitHandler: MicrobitHandler | undefined = undefined;
     private microbitVersion: MBSpecs.MBVersion | undefined = undefined;
+    private name: string | undefined = undefined;
 
     public constructor(bluetoothDevice?: BluetoothDevice) {
         if (bluetoothDevice) {
@@ -53,7 +54,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         this.setState(MicrobitDeviceState.CLOSED);
     }
 
-    public async connect(): Promise<void> {
+    public async connect(name?: string): Promise<void> {
         debugLog("Connecting to micro:bit");
         let timeout;
         if (this.getState() !== MicrobitDeviceState.CLOSED) {
@@ -65,7 +66,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         try {
             // We need to remember the device in case we need to shut it down gracefully
             const rememberedDevice = Object.assign({}, this.bluetoothDevice)
-            await this.connectBluetoothDevice();
+            await this.connectBluetoothDevice(name);
             this.assignDisconnectHandler();
 
             this.deviceServices = new MicrobitBluetoothDeviceServices(this.bluetoothDevice!);
@@ -109,11 +110,11 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         }
     }
 
-    private async connectBluetoothDevice() {
+    private async connectBluetoothDevice(name?: string) {
         if (!this.bluetoothDevice) {
             debugLog("Requesting micro:bit device");
             this.setState(MicrobitDeviceState.CONNECTING);
-            this.bluetoothDevice = await this.requestDevice();
+            this.bluetoothDevice = await this.requestDevice(name);
         } else {
             debugLog("Reconnecting to device");
             this.setState(MicrobitDeviceState.RECONNECTING);
@@ -218,6 +219,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
     }
 
     private async requestDevice(name?: string) {
+        this.name = name;
         const filters = name
             ? [{ namePrefix: `BBC micro:bit [${name}]` }]
             : [{ namePrefix: `BBC micro:bit` }];
@@ -236,11 +238,22 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         return device;
     }
 
-    setIOPin(pin: MBSpecs.UsableIOPin, on: boolean): void {
+    public async setIOPin(pin: MBSpecs.UsableIOPin, on: boolean): Promise<void> {
         if (this.deviceServices) {
-            this.deviceServices.setIOPin(pin, on);
+            await this.deviceServices.setIOPin(pin, on);
         } else {
             throw new Error("Device services not initialized");
         }
+    }
+
+    public getLastVersion(): MBSpecs.MBVersion | undefined {
+        if (this.microbitVersion) {
+            return this.microbitVersion;
+        }
+        return undefined;
+    }
+
+    public getLastName(): string | undefined {
+        return this.name;
     }
 }

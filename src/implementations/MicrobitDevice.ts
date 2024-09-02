@@ -1,11 +1,12 @@
 import { MicrobitHandler } from "../interfaces/MicrobitHandler";
+import MBSpecs from "./MBSpecs";
 
 /**
  * The state of the Microbit device
  */
 export enum MicrobitDeviceState {
     /**
-     * The device is connected
+     * The device is fully connected
      */
     CONNECTED = "CONNECTED",
     /**
@@ -77,4 +78,14 @@ export interface MicrobitDevice {
      * Set the IO pin on the device
      */
     setIOPin(pin: number, on: boolean): void;
+
+    /**
+     * Returns the version of the last connected micro:bit bluetooth device
+     */
+    getLastVersion(): MBSpecs.MBVersion | undefined;
+
+    /**
+     * Get last name of the connected micro:bit bluetooth device
+     */
+    getLastName(): string | undefined;
 }
