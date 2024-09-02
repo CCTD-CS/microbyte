@@ -67,7 +67,7 @@ export interface MicrobitDevice {
     /**
      * Send a message to the device
      */
-    sendMessage(message: string): void;
+    sendMessage(message: string): Promise<void>;
 
     /**
      * Set the LED matrix on the device. It is a 5x5 matrix of booleans

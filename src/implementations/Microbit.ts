@@ -32,9 +32,9 @@ export class Microbit {
 		}
 	}
 
-	public sendMessage(message: string) {
+	public async sendMessage(message: string): Promise<void> {
 		if (this.device) {
-			this.device.sendMessage(message);
+			await this.device.sendMessage(message);
 		}
 	}
 

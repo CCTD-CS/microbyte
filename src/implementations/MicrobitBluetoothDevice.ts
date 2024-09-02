@@ -40,9 +40,9 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         }
     }
 
-    public sendMessage(message: string): void {
+    public async sendMessage(message: string): Promise<void> {
         if (this.deviceServices) {
-            this.deviceServices.sendMessage(message);
+            await this.deviceServices.sendMessage(message);
         }
     }
 
