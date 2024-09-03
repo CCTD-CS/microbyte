@@ -9,7 +9,7 @@ export interface MicrobitHandler {
 
     onButtonBPressed: (state: MBSpecs.ButtonState) => void;
 
-    onUartMessageReceived: (data: string) => void;
+    onMessageReceived: (data: string) => void;
 
     onDisconnected: () => void;
 

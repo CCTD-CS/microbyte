@@ -34,7 +34,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         this.microbitHandler = handler;
         if (this.deviceServices) {
             this.deviceServices.setAccelerometerHandler(handler.onAccelerometerDataReceived);
-            this.deviceServices.setUartHandler(handler.onUartMessageReceived);
+            this.deviceServices.setUartHandler(handler.onMessageReceived);
             this.deviceServices.setButtonAHandler(handler.onButtonAPressed);
             this.deviceServices.setButtonBHandler(handler.onButtonBPressed);
         }
