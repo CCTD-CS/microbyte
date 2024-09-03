@@ -7,7 +7,7 @@ class USBController {
     private webUsb: WebUSB | undefined = undefined;
     private device: USBDevice | undefined = undefined;
 
-    public async connect() {
+    public async connect(): Promise<void> {
         debugLog("USBController connecting via USB");
         const requestOptions: USBDeviceRequestOptions = {
             filters: [
@@ -23,7 +23,7 @@ class USBController {
             this.device = device;
             this.webUsb = new WebUSB(device);
         } catch (e) {
-            console.log(e);
+            debugLog(e);
             return Promise.reject(e);
         }
     }
@@ -40,7 +40,7 @@ class USBController {
         const sernoPrefix: string = serialNumber.substring(0, 4);
         if (parseInt(sernoPrefix) < 9903) return 1;
         else return 2;
-      }
+    }
 
     public async getFriendlyName(): Promise<string> {
         let result = '';
@@ -69,26 +69,26 @@ class USBController {
     public async flashHex(
         hex: ArrayBuffer,
         progressCallback: (progress: number) => void,
-      ): Promise<void> {
+    ): Promise<void> {
         if (!this.webUsb) {
             throw new Error("Cannot flash hex, no device connected. Connect it first")
         }
         const target = new DAPLink(this.webUsb);
-    
+
         target.on(DAPLink.EVENT_PROGRESS, (progress: number) => {
-          progressCallback(progress);
+            progressCallback(progress);
         });
-    
+
         try {
-          await target.connect();
-          await target.flash(hex);
-          await target.disconnect();
+            await target.connect();
+            await target.flash(hex);
+            await target.disconnect();
         } catch (error) {
-          console.log(error);
-          return Promise.reject(error);
+            console.log(error);
+            return Promise.reject(error);
         }
         return Promise.resolve();
-      }
+    }
 }
 
 export default USBController;
