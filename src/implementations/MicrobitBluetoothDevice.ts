@@ -81,6 +81,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
 
             // Due to for example timeout, the state might have changed.
             if (this.state === MicrobitDeviceState.CLOSED) {
+                debugLog("Connection failed, state is closed");
                 if (rememberedDevice) {
                     rememberedDevice.gatt?.disconnect(); // Shutdown the connection gracefully
                 }
@@ -96,7 +97,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         }
     }
 
-    private unsetBluetoothDevice(error?: unknown) {
+    private unsetBluetoothDevice(error: unknown) {
         if (this.microbitHandler) {
             this.state === MicrobitDeviceState.RECONNECTING && this.microbitHandler.onReconnectError(error as Error)
             this.state === MicrobitDeviceState.CONNECTING && this.microbitHandler.onConnectError(error as Error);
@@ -108,6 +109,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
             }
             this.bluetoothDevice = undefined;
         }
+
     }
 
     private async connectBluetoothDevice(name?: string) {
