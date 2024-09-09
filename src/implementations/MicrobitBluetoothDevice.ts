@@ -30,7 +30,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
     }
 
     public setHandler(handler: MicrobitHandler) {
-        debugLog("Setting micro:bit handler");
+        debugLog("Setting micro:bit handler", handler);
         this.microbitHandler = handler;
         if (this.deviceServices) {
             this.deviceServices.setAccelerometerHandler(handler.onAccelerometerDataReceived);
@@ -56,6 +56,9 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
 
     public async connect(name?: string): Promise<void> {
         debugLog("Connecting to micro:bit");
+        if (!this.microbitHandler) {
+            console.warn("micro:bit handler has not been set, some functionality may not work properly");
+        }
         let timeout;
         if (this.getState() !== MicrobitDeviceState.CLOSED) {
             timeout = setTimeout(() => {
@@ -69,6 +72,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
             await this.connectBluetoothDevice(name);
             this.assignDisconnectHandler();
 
+
             this.deviceServices = new MicrobitBluetoothDeviceServices(this.bluetoothDevice!);
             if (this.microbitHandler) {
                 // Reassign the handler to ensure it works as before
@@ -78,6 +82,8 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
 
             // Reveals if it's a version 1 or 2 micro:bit
             this.microbitVersion = await MBSpecs.Utility.getModelNumber(this.bluetoothDevice!.gatt!);
+
+            debugLog("Micro:bit version", this.microbitVersion);
 
             // Due to for example timeout, the state might have changed.
             if (this.state === MicrobitDeviceState.CLOSED) {
@@ -196,6 +202,8 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
 
     private async setState(state: MicrobitDeviceState) {
         this.state = state;
+
+        debugLog("Setting state to", state, "has handler", this.microbitHandler);
         if (this.microbitHandler) {
             switch (state) {
                 case MicrobitDeviceState.CONNECTED:
