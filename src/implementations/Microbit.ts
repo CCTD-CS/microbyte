@@ -72,7 +72,7 @@ export class Microbit {
 		}
 	}
 
-	public async setIOPin(pin: MBSpecs.UsableIOPin, on: boolean) {
+	public async setIOPin(pin: MBSpecs.UsableIOPin, on: boolean): Promise<void> {
 		if (this.device) {
 			await this.device.setIOPin(pin, on);
 		}
