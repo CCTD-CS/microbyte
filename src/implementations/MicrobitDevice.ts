@@ -77,7 +77,7 @@ export interface MicrobitDevice {
     /**
      * Set the IO pin on the device
      */
-    setIOPin(pin: number, on: boolean): void;
+    setIOPin(pin: number, on: boolean): Promise<void>;
 
     /**
      * Returns the version of the last connected micro:bit bluetooth device
