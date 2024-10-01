@@ -40,10 +40,6 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         }
     }
 
-    public getHandler(): MicrobitHandler | undefined {
-        return this.microbitHandler;
-    }
-
     public async sendMessage(message: string): Promise<void> {
         if (this.deviceServices) {
             await this.deviceServices.sendMessage(message);

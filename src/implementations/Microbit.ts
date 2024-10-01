@@ -32,6 +32,10 @@ export class Microbit {
 		}
 	}
 
+	public getHandler(): MicrobitHandler | undefined {
+		return this.handler;
+	}
+
 	public async sendMessage(message: string): Promise<void> {
 		if (this.device) {
 			await this.device.sendMessage(message);
