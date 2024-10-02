@@ -98,4 +98,8 @@ export class Microbit {
 		}
 		return undefined;
 	}
+
+	public getDevice(): MicrobitDevice | undefined {
+		return this.device;
+	}
 }
