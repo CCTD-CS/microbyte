@@ -266,4 +266,8 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
     public getLastName(): string | undefined {
         return this.name;
     }
+
+    public getId(): string | undefined {
+        return this.bluetoothDevice?.id;
+    }
 }

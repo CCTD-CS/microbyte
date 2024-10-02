@@ -88,4 +88,9 @@ export interface MicrobitDevice {
      * Get last name of the connected micro:bit bluetooth device
      */
     getLastName(): string | undefined;
+
+    /**
+     * An identifier for the microbit device
+     */
+    getId(): string | undefined
 }

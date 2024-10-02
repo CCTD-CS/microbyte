@@ -16,6 +16,10 @@ export class Microbit {
 		this.device = device;
 	}
 
+	public getId(): string | undefined {
+		return this.device?.getId();
+	}
+
 	public connect() {
 		if (!this.device) {
 			throw new Error("Device not set");
