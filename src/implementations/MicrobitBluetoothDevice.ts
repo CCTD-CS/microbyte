@@ -197,7 +197,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         if (this.bluetoothDevice) {
             this.bluetoothDevice.gatt?.disconnect();
         }
-        this.setState(MicrobitDeviceState.DISCONNECTED);
+        this.setState(MicrobitDeviceState.CLOSED);
     }
 
     private async setState(state: MicrobitDeviceState) {

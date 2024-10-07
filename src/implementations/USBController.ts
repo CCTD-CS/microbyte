@@ -89,6 +89,12 @@ class USBController {
         }
         return Promise.resolve();
     }
+
+    public disconnect() {
+        if (this.webUsb) {
+            this.webUsb.close();
+        }
+    }
 }
 
 export default USBController;
