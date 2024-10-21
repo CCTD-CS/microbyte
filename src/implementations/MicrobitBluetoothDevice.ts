@@ -62,8 +62,8 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         let timeout;
         if (this.getState() !== MicrobitDeviceState.CLOSED) {
             timeout = setTimeout(() => {
-                this.unsetBluetoothDevice(Error("Connection failed, timeout reached"));
-                throw new Error("Connection failed, timeout reached");
+                // this.unsetBluetoothDevice(Error("Connection failed, timeout reached"));
+                // throw new Error("Connection failed, timeout reached");
             }, 10000);
         }
         try {
