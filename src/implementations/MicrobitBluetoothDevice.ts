@@ -43,6 +43,8 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
     public async sendMessage(message: string): Promise<void> {
         if (this.deviceServices) {
             await this.deviceServices.sendMessage(message);
+        } else {
+            console.warn("Cannot send message, there are no device services attached to the microbit bluetooth device")
         }
     }
 
@@ -62,8 +64,8 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         let timeout;
         if (this.getState() !== MicrobitDeviceState.CLOSED) {
             timeout = setTimeout(() => {
-                // this.unsetBluetoothDevice(Error("Connection failed, timeout reached"));
-                // throw new Error("Connection failed, timeout reached");
+                this.unsetBluetoothDevice(new Error("Connection failed, timeout reached"));
+                throw new Error("Connection failed, timeout reached");
             }, 10000);
         }
         try {
@@ -176,12 +178,15 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         if (this.bluetoothDevice) {
             if (this.bluetoothDevice.gatt) {
                 if (this.bluetoothDevice.gatt?.connected) {
+                    debugLog("getState: CONNECTED")
                     return MicrobitDeviceState.CONNECTED;
                 }
             } else {
+                debugLog("getState: CLOSED")
                 return MicrobitDeviceState.CLOSED;
             }
         }
+        debugLog("getState: STATE->" + this.state)
         return this.state;
     }
 
