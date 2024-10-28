@@ -159,10 +159,12 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         // Some cleanup
         this.disconnectedCleanup();
 
-        this.setState(MicrobitDeviceState.DISCONNECTED);
 
         if (this.shouldReconnectAutomatically) {
+            this.setState(MicrobitDeviceState.DISCONNECTED);
             await this.attemptReconnect();
+        } else {
+            this.setState(MicrobitDeviceState.CLOSED);
         }
     }
 
