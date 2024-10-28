@@ -232,6 +232,9 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
                 case MicrobitDeviceState.CLOSED:
                     this.microbitHandler.onClosed();
                     break;
+                case MicrobitDeviceState.INITIALIZING:
+                    this.microbitHandler.onInitializing();
+                    break;
             }
         }
     }

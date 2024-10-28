@@ -21,6 +21,8 @@ export interface MicrobitHandler {
 
     onReconnectError: (error: Error) => void;
 
+    onInitializing: () => void;
+
     onClosed: () => void;
 
     onConnecting: () => void;
