@@ -157,7 +157,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         debugLog("Disconnected from micro:bit");
 
         // Some cleanup
-        this.disconnect();
+        this.disconnectedCleanup();
 
         this.setState(MicrobitDeviceState.DISCONNECTED);
 
@@ -202,10 +202,13 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
     }
 
     public disconnect(): void {
+        this.setState(MicrobitDeviceState.CLOSED);
+    }
+
+    private disconnectedCleanup() {
         if (this.bluetoothDevice) {
             this.bluetoothDevice.gatt?.disconnect();
         }
-        this.setState(MicrobitDeviceState.CLOSED);
     }
 
     private async setState(state: MicrobitDeviceState) {
