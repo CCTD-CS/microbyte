@@ -61,7 +61,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         if (!this.microbitHandler) {
             console.warn("micro:bit handler has not been set, some functionality may not work properly");
         }
-        let timeout;
+        let timeout: NodeJS.Timeout | undefined = undefined;
         if (this.getState() !== MicrobitDeviceState.CLOSED) {
             timeout = setTimeout(() => {
                 this.unsetBluetoothDevice(new Error("Connection failed, timeout reached"));
@@ -80,6 +80,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
                 // Reassign the handler to ensure it works as before
                 this.setHandler(this.microbitHandler);
             }
+            this.setState(MicrobitDeviceState.INITIALIZING)
             await this.deviceServices.init();
 
             // Reveals if it's a version 1 or 2 micro:bit
@@ -101,7 +102,9 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
             debugLog("Error connecting to micro:bit", error);
             this.unsetBluetoothDevice(error);
         } finally {
-            clearTimeout(timeout);
+            if (timeout) {
+                clearTimeout(timeout);
+            }
         }
     }
 
