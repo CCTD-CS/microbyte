@@ -1,6 +1,6 @@
 {
 	"name": "microbyte",
-	"version": "0.12.0",
+	"version": "0.13.4",
 	"description": "A wrapper for bluetooth and USB interactivity between browsers and micro:bits",
 	"main": "dist/microbyte.cjs.js",
 	"module": "dist/microbyte.esm.js",
@@ -39,21 +39,21 @@
 	},
 	"homepage": "https://github.com/r59q/microbyte#readme",
 	"dependencies": {
-		"@types/w3c-web-usb": "^1.0.6",
-		"@types/web-bluetooth": "^0.0.16",
+		"@types/w3c-web-usb": "^1.0.10",
+		"@types/web-bluetooth": "^0.0.20",
 		"dapjs": "^2.3.0"
 	},
 	"devDependencies": {
-		"@rollup/plugin-commonjs": "^24.0.1",
-		"@rollup/plugin-node-resolve": "^15.0.1",
-		"@rollup/plugin-typescript": "^11.0.0",
-		"eslint": "^8.37.0",
-		"prettier": "^2.8.7",
-		"rollup": "^3.20.2",
+		"@rollup/plugin-commonjs": "^28.0.1",
+		"@rollup/plugin-node-resolve": "^15.3.0",
+		"@rollup/plugin-typescript": "^12.1.1",
+		"eslint": "^9.13.0",
+		"prettier": "^3.3.3",
+		"rollup": "^4.24.2",
 		"ts-node": "^10.9.1",
-		"tslib": "^2.5.0",
-		"typedoc": "^0.23.28",
-		"typescript": "^5.0.3",
-		"vite": "^5.4.0"
+		"tslib": "^2.8.0",
+		"typedoc": "^0.26.10",
+		"typescript": "^5.6.3",
+		"vite": "^5.4.10"
 	}
 }

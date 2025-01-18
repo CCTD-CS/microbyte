@@ -43,6 +43,8 @@ export class Microbit {
 	public async sendMessage(message: string): Promise<void> {
 		if (this.device) {
 			await this.device.sendMessage(message);
+		} else {
+			console.warn("Cannot send message, there's no device attached!");
 		}
 	}
 

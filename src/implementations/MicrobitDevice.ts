@@ -18,6 +18,10 @@ export enum MicrobitDeviceState {
      */
     CONNECTING = "CONNECTING",
     /**
+     * The device has been connected, and is being initialized
+     */
+    INITIALIZING = "INITIALIZING",
+    /**
      * The device is reconnecting
      */
     RECONNECTING = "RECONNECTING",

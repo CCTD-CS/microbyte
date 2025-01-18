@@ -43,6 +43,8 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
     public async sendMessage(message: string): Promise<void> {
         if (this.deviceServices) {
             await this.deviceServices.sendMessage(message);
+        } else {
+            console.warn("Cannot send message, there are no device services attached to the microbit bluetooth device")
         }
     }
 
@@ -59,12 +61,12 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         if (!this.microbitHandler) {
             console.warn("micro:bit handler has not been set, some functionality may not work properly");
         }
-        let timeout;
+        let timeout: NodeJS.Timeout | undefined = undefined;
         if (this.getState() !== MicrobitDeviceState.CLOSED) {
             timeout = setTimeout(() => {
-                this.unsetBluetoothDevice(Error("Connection failed, timeout reached"));
+                this.unsetBluetoothDevice(new Error("Connection failed, timeout reached"));
                 throw new Error("Connection failed, timeout reached");
-            }, 8000);
+            }, 10000);
         }
         try {
             // We need to remember the device in case we need to shut it down gracefully
@@ -78,6 +80,7 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
                 // Reassign the handler to ensure it works as before
                 this.setHandler(this.microbitHandler);
             }
+            this.setState(MicrobitDeviceState.INITIALIZING)
             await this.deviceServices.init();
 
             // Reveals if it's a version 1 or 2 micro:bit
@@ -99,7 +102,9 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
             debugLog("Error connecting to micro:bit", error);
             this.unsetBluetoothDevice(error);
         } finally {
-            clearTimeout(timeout);
+            if (timeout) {
+                clearTimeout(timeout);
+            }
         }
     }
 
@@ -152,12 +157,14 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         debugLog("Disconnected from micro:bit");
 
         // Some cleanup
-        this.disconnect();
+        this.disconnectedCleanup();
 
-        this.setState(MicrobitDeviceState.DISCONNECTED);
 
         if (this.shouldReconnectAutomatically) {
+            this.setState(MicrobitDeviceState.DISCONNECTED);
             await this.attemptReconnect();
+        } else {
+            this.setState(MicrobitDeviceState.CLOSED);
         }
     }
 
@@ -176,12 +183,15 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         if (this.bluetoothDevice) {
             if (this.bluetoothDevice.gatt) {
                 if (this.bluetoothDevice.gatt?.connected) {
+                    debugLog("getState: CONNECTED")
                     return MicrobitDeviceState.CONNECTED;
                 }
             } else {
+                debugLog("getState: CLOSED")
                 return MicrobitDeviceState.CLOSED;
             }
         }
+        debugLog("getState: STATE->" + this.state)
         return this.state;
     }
 
@@ -194,10 +204,13 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
     }
 
     public disconnect(): void {
+        this.setState(MicrobitDeviceState.CLOSED);
+    }
+
+    private disconnectedCleanup() {
         if (this.bluetoothDevice) {
             this.bluetoothDevice.gatt?.disconnect();
         }
-        this.setState(MicrobitDeviceState.CLOSED);
     }
 
     private async setState(state: MicrobitDeviceState) {
@@ -223,6 +236,9 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
                     break;
                 case MicrobitDeviceState.CLOSED:
                     this.microbitHandler.onClosed();
+                    break;
+                case MicrobitDeviceState.INITIALIZING:
+                    this.microbitHandler.onInitializing();
                     break;
             }
         }
