@@ -67,7 +67,7 @@ class USBController {
     }
 
     public async flashHex(
-        hex: ArrayBuffer,
+        hex: ArrayBuffer | Uint8Array,
         progressCallback: (progress: number) => void,
     ): Promise<void> {
         if (!this.webUsb) {
