@@ -98,6 +98,14 @@ namespace MBSpecs {
         export const DEVICE_ID_1 = 0x064;
         export const MICROBIT_NAME_LENGTH = 5;
         export const MICROBIT_NAME_CODE_LETTERS = 5;
+
+        /**
+         * The USB board IDs for the different micro:bit versions.
+         */
+        export const MBBoardID = {
+            '1': [0x9900, 0x9901],
+            '2': [0x9903, 0x9904, 0x9905, 0x9906],
+        };
     }
 
     /**
@@ -109,6 +117,7 @@ namespace MBSpecs {
     }
 
     export type MBVersion = 1 | 2;
+
 
     /**
      * The state of the buttons on the micro:bit. Becomes LongPressed when the button is held for more than ~2 second.
@@ -216,10 +225,22 @@ namespace MBSpecs {
 
         /**
          * Fetches the model number of the micro:bit.
+         * @deprecated Use getModelNumberFromBluetooth instead.
          * @param {BluetoothRemoteGATTServer} gattServer The GATT server to read from.
          * @return {Promise<number>} The model number of the micro:bit. 1 for the original, 2 for the new.
          */
         public static async getModelNumber(
+            gattServer: BluetoothRemoteGATTServer,
+        ): Promise<MBSpecs.MBVersion> {
+            return this.getModelNumberFromBluetooth(gattServer);
+        }
+
+        /**
+         * Fetches the model number of the micro:bit.
+         * @param {BluetoothRemoteGATTServer} gattServer The GATT server to read from.
+         * @return {Promise<number>} The model number of the micro:bit. 1 for the original, 2 for the new.
+         */
+        public static async getModelNumberFromBluetooth(
             gattServer: BluetoothRemoteGATTServer,
         ): Promise<MBSpecs.MBVersion> {
             try {
@@ -248,6 +269,20 @@ namespace MBSpecs {
                 console.log(e);
             }
             throw new Error('Could not read model number');
+        }
+
+        /**
+         * Fetches the model number of the micro:bit from its USB board ID.
+         * @param {number} boardId The board ID to read from.
+         * @return {MBSpecs.MBVersion} The model number of the micro:bit.
+         */
+        public static getModelNumberFromBoardID(boardId: number): MBSpecs.MBVersion {
+            for (const [version, boardIds] of Object.entries(USBSpecs.MBBoardID)) {
+                if (boardIds.includes(boardId)) {
+                    return parseInt(version) as MBSpecs.MBVersion;
+                }
+            }
+            throw new Error(`Unknown board ID: ${boardId}`);
         }
 
         /**
