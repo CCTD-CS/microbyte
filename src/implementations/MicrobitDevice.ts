@@ -43,11 +43,6 @@ export interface MicrobitDevice {
     connect(): void;
 
     /**
-     * Close the device
-     */
-    close(): void;
-
-    /**
      * Get the state of the device
      */
     getState(): MicrobitDeviceState;
