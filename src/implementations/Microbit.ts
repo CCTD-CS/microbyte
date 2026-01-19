@@ -53,6 +53,9 @@ export class Microbit {
 			this.device.setAutoReconnect(false);
 			this.device.disconnect();
 		}
+		if (!this.device) {
+			console.warn("Cannot disconnect, there's no device attached!");
+		}
 	}
 
 	public setAutoReconnect(shouldReconnectAutomatically: boolean): void {

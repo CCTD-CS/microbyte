@@ -48,9 +48,11 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
         }
     }
 
-    public close(): void {
+    public disconnect(): void {
         if (this.bluetoothDevice) {
             this.bluetoothDevice.gatt?.disconnect();
+        } else {
+            console.warn("Cannot close device, there's no bluetooth device attached!");
         }
         this.bluetoothDevice = undefined;
         this.setState(MicrobitDeviceState.CLOSED);
@@ -201,10 +203,6 @@ export class MicrobitBluetoothDevice implements MicrobitDevice {
 
     public isAutoReconnectEnabled(): boolean {
         return this.shouldReconnectAutomatically;
-    }
-
-    public disconnect(): void {
-        this.setState(MicrobitDeviceState.CLOSED);
     }
 
     private disconnectedCleanup() {

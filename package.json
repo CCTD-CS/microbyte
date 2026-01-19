@@ -1,6 +1,6 @@
 {
 	"name": "microbyte",
-	"version": "0.15.0",
+	"version": "0.16.0",
 	"description": "A wrapper for bluetooth and USB interactivity between browsers and micro:bits",
 	"main": "dist/microbyte.cjs.js",
 	"module": "dist/microbyte.esm.js",
